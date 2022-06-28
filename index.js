@@ -1,6 +1,10 @@
 const express = require('express')
+const connectDB = require('./database')
+
 const app = express()
 const port = 3000
+
+connectDB()
 
 app.get('/', (req, res) => {
   res.send('Hello World!')
