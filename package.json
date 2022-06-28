@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/haptienhoat/node_core/issues"
   },
-  "homepage": "https://github.com/haptienhoat/node_core#readme"
+  "homepage": "https://github.com/haptienhoat/node_core#readme",
+  "dependencies": {
+    "express": "^4.18.1"
+  }
 }
