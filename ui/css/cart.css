@@ -1,0 +1,34 @@
+.img-product-cart {
+    height: 100px;
+    width: 100px;
+}
+
+.block-cart {
+    display: flex;
+    margin: 10px;
+}
+
+.cart {
+    width: 1000px;
+    margin: auto;
+    background-color: rgb(246, 241, 241);
+}
+
+.text-cart {
+    text-align: center;
+}
+
+.description-product-cart {
+    margin-left: 10px;
+}
+
+.order {
+    margin: 20px;
+    width: 960px;
+}
+
+.total-product-cart {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px;
+}
