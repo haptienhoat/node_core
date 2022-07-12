@@ -7,4 +7,6 @@ export class CreateOrderDto {
         image: string
     }];
     price: number;
+    address: string;
+    phone: string;
 }

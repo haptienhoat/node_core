@@ -28,7 +28,9 @@ async function getProfileOrder() {
         let payment = $(`<div class="total-product-cart">
         <p>Tổng tiền:</p>
         <p>${data.price} đồng</p>
-    </div>`)
+    </div>
+    <p>Địa chỉ: ${data.address} </p>
+    <p>Số điện thoại: ${data.phone} </p>`)
         $('.cart').append(payment)
     } catch (error) {
         console.log("Error: ", error)

@@ -34,26 +34,25 @@ export class OrdersService {
     return await order.save();
   }
 
-  async findAll() {
-    return await this.OrderModel.find({});
+  async findAll(user) {
+    return await this.OrderModel.find({username: user.username});
   }
 
-  async findOne(id: string) {
-    let order = await this.OrderModel.findOne({ _id: id });
+  async findOne(user, id: string) {
+    let order = await this.OrderModel.findOne({ _id: id , username: user.username});
     if (!order) throw new NotFoundException('Order not found');
     else return order;
   }
 
   async update(id: string) {
-    let order = await this.OrderModel.findOne({ _id: id });
+    let order = await this.OrderModel.findOne({ _id: id});
     if (!order) throw new NotFoundException('Order not found');
     if (order.status == "complete") throw new BadRequestException(`Can not update status order`);
-
     return await this.OrderModel.updateOne({ _id: id }, { status: "complete" });
   }
 
-  async delete(id: string) {
-    let order = await this.OrderModel.findOne({ _id: id });
+  async cancel(user, id: string) {
+    let order = await this.OrderModel.findOne({ _id: id , username: user.username});
     if (!order) throw new NotFoundException('Order not found');
     if (order.status == "complete") throw new BadRequestException(`Can not update status order`);
     for (let index = 0; index < order.item.length; index++) {
@@ -62,6 +61,23 @@ export class OrdersService {
       product.quantity += Number(item.quantity)
       await this.ProductModel.updateOne({ _id: product.id }, { quantity: product.quantity })
     }
-    return await this.OrderModel.deleteOne({ _id: id });
+    return await this.OrderModel.updateOne({ _id: id }, { status: "cancel" });
+  }
+
+  async getAllOrder() {
+    return await this.OrderModel.find({});
+  }
+
+  async cancels(id: string) {
+    let order = await this.OrderModel.findOne({ _id: id});
+    if (!order) throw new NotFoundException('Order not found');
+    if (order.status == "complete") throw new BadRequestException(`Can not update status order`);
+    for (let index = 0; index < order.item.length; index++) {
+      let item = order.item[index]
+      let product = await this.ProductModel.findOne({ _id: item.id })
+      product.quantity += Number(item.quantity)
+      await this.ProductModel.updateOne({ _id: product.id }, { quantity: product.quantity })
+    }
+    return await this.OrderModel.updateOne({ _id: id }, { status: "cancel" });
   }
 }

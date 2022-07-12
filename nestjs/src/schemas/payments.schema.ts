@@ -1,27 +1,21 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 
-export type OrderDocument = Order & Document;
+export type PaymentDocument = Payment & Document;
 
 @Schema({timestamps: true})
-export class Order {
+export class Payment {
   @Prop({required: true})
   username: string;
-
-  @Prop({required: true})
-  item: [{id:string, name: string,quantity: number,price: number}];
 
   @Prop({required: true})
   price: number;
 
   @Prop({required: true})
-  address: string;
-
-  @Prop({required: true})
-  phone: string;
+  order_id: string;
 
   @Prop({required: true})
   status: string;
 }
 
-export const OrderSchema = SchemaFactory.createForClass(Order);
+export const PaymentSchema = SchemaFactory.createForClass(Payment);

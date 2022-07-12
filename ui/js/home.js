@@ -2,21 +2,25 @@ if (!localStorage.getItem('username')) {
     $('.dropdown').css('display', 'none')
     $('.cartproduct').css('display', 'none')
     $('.historyorder').css('display', 'none')
+    $('.historypayment').css('display', 'none')
     $('.itemlogin').css('display', 'block')
     $('.itemsignup').css('display', 'block')
 } else {
     $('.dropdown').css('display', 'block')
     $('.cartproduct').css('display', 'block')
     $('.historyorder').css('display', 'block')
+    $('.historypayment').css('display', 'block')
     $('.itemlogin').css('display', 'none')
     $('.itemsignup').css('display', 'none')
     $('.dropdown-toggle').text(localStorage.getItem('username'))
     if (!localStorage.getItem('roles').includes("admin")) {
         $('.addproduct').css('display', 'none')
         $('.managerproduct').css('display', 'none')
+        $('.managerorder').css('display', 'none')
     } else {
         $('.addproduct').css('display', 'block')
         $('.managerproduct').css('display', 'block')
+        $('.managerorder').css('display', 'block')
     }
 }
 
@@ -52,7 +56,6 @@ $('.btn-login').click(async (event) => {
     event.preventDefault()
     let username = $("#usernamelogin").val()
     let password = $("#passwordlogin").val()
-    console.log(username + " and " + password)
     try {
         let response = await fetch(`http://localhost:3000/auth/login`, {
             method: 'POST',
@@ -89,7 +92,6 @@ $('.btn-signup').click(async (event) => {
     event.preventDefault()
     let username = $("#usernamesignup").val()
     let password = $("#passwordsignup").val()
-    console.log(username + " and " + password)
     try {
         let response = await fetch(`http://localhost:3000/auth/signup`, {
             method: 'POST',

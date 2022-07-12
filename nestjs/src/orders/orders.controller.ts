@@ -20,19 +20,19 @@ export class OrdersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.User)
   @Get()
-  async findAll() {
-    return await this.ordersService.findAll();
+  async findAll(@Request() req) {
+    return await this.ordersService.findAll(req.user);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.User)
   @Get(':id')
-  async findOne(@Param('id') id: string) {
-    return await this.ordersService.findOne(id);
+  async findOne(@Request() req, @Param('id') id: string) {
+    return await this.ordersService.findOne(req.user, id);
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)
-  @Roles(Role.User)
+  @Roles(Role.Admin)
   @Patch(':id')
   async update(@Param('id') id: string) {
     return await this.ordersService.update(id);
@@ -41,7 +41,21 @@ export class OrdersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Roles(Role.User)
   @Delete(':id')
-  async delete(@Param('id') id: string) {
-    return await this.ordersService.delete(id);
+  async cancel(@Request() req, @Param('id') id: string) {
+    return await this.ordersService.cancel(req.user, id);
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Admin)
+  @Get('/admin/get')
+  async getAllOrder() {
+    return await this.ordersService.getAllOrder();
+  }
+
+  @UseGuards(JwtAuthGuard, RolesGuard)
+  @Roles(Role.Admin)
+  @Delete('admin/:id')
+  async cancels(@Param('id') id: string) {
+    return await this.ordersService.cancels(id);
   }
 }

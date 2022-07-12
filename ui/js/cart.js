@@ -31,6 +31,14 @@ async function getCart() {
         <p>Tổng tiền:</p>
         <p>${totalprice} đồng</p>
     </div>
+    <div>
+        <label for="">Số điện thoại :</label>
+        <input type="text" id="phone">
+    </div>
+    <div>
+        <label for="">Địa chỉ :</label>
+        <input type="text" id="address">
+    </div>
     <button class="btn btn-primary order">Đặt hàng</button>`)
         $('.cart').append(payment)
         $(".remove-to-cart").click(async function () {
@@ -47,6 +55,8 @@ async function getCart() {
             event.preventDefault()
             let item = data.item
             let price = totalprice
+            let address = $('#address').val()
+            let phone = $('#phone').val()
             try {
                 let response = await fetch(`http://localhost:3000/orders`, {
                     method: 'POST',
@@ -55,14 +65,23 @@ async function getCart() {
                         'Content-Type': 'application/json',
                         'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
                     },
-                    body: JSON.stringify({ item: item, price: price }),
+                    body: JSON.stringify({ item: item, price: price, phone: phone, address: address }),
                 })
                 let data = await response.json()
-                console.log(data)
                 if (data.statusCode == 400) {
                     alert(data.message)
                     window.location = `cart.html`;
                 } else {
+                    let responses = await fetch(`http://localhost:3000/payments`, {
+                        method: 'POST',
+                        headers: {
+                            'Accept': 'application/json',
+                            'Content-Type': 'application/json',
+                            'Authorization': 'Bearer ' + localStorage.getItem('accessToken')
+                        },
+                        body: JSON.stringify({ price: data.price, order_id: data._id }),
+                    })
+                    let datas = await responses.json()
                     alert('Đặt hàng thành công')
                     window.location = `home.html`;
                 }

@@ -23,7 +23,6 @@ async function getManagerProduct() {
         let id
         $('.destroyproduct').click(function() {
             id = $(this).attr("data-id")
-            console.log(id)
         })
         $('.deleteproduct').click(async function() {
             try {
